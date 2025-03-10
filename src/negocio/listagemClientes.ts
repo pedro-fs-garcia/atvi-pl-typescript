@@ -24,4 +24,26 @@ export default class ListagemClientes extends Listagem {
         // });
         console.log(`\n`);
     }
+
+    public listarDezQueMaisConsumiram() {
+        let ordenados = [...this.clientes].sort((c1: Cliente, c2: Cliente) => 
+            c2.getItensConsumidos - c1.getItensConsumidos
+        );
+        let top10 = ordenados.slice(0, 10);
+        console.log('Listagem dos dez clientes que mais consumiram em quantidade:\n');
+        top10.forEach(cli => {
+            cli.listarPrincipaisAtributos();
+        });
+    }
+
+    public listarCincoQueMaisGastaram(){
+        let ordenados = [...this.clientes].sort((c1: Cliente, c2: Cliente) => 
+            c2.getValorConsumido - c1.getValorConsumido
+        );
+        let top5 = ordenados.slice(0, 5); // Pegando os 10 primeiros
+        console.log('Listagems dos cinco clientes que mais consumiram em valor:\n');
+        top5.forEach(cli => {
+            cli.listarPrincipaisAtributos();
+        });
+    }
 }

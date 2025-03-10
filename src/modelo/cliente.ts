@@ -1,3 +1,4 @@
+import { type } from "os"
 import CPF from "./cpf"
 import Pet from "./pet"
 import Produto from "./produto"
@@ -15,6 +16,8 @@ export default class Cliente {
     private produtosConsumidos: Array<Produto>
     private servicosConsumidos: Array<Servico>
     private pets: Array<Pet>
+    private itensConsumidos: number;
+    private valorConsumido: number;
     
     constructor(nome: string, nomeSocial: string, cpf: CPF) {
         this.nome = nome
@@ -26,6 +29,8 @@ export default class Cliente {
         this.produtosConsumidos = []
         this.servicosConsumidos = []
         this.pets = []
+        this.itensConsumidos = 0;
+        this.valorConsumido = 0;
     }
     
     public adicionaTelefone(telefone:Telefone){
@@ -36,18 +41,33 @@ export default class Cliente {
         this.pets.push(pet);
     }
 
-    public adicionaProduto(produto:Produto){
+    public adicionaProduto(produto:Produto, quantidade:number){
         this.produtosConsumidos.push(produto);
+        this.itensConsumidos += quantidade;
+        this.valorConsumido += produto.getPreco * quantidade;
     }
 
     public adicionaServico(servico:Servico){
         this.servicosConsumidos.push(servico);
+        this.itensConsumidos += 1;
+        this.valorConsumido += servico.getPreco;
     }
 
     public listarPets(){
         this.pets.forEach(pet => {
             pet.listarAtributos();
-        })
+        });
+    }
+
+    public listarPrincipaisAtributos(){
+        console.log(`Nome do cliente: ${this.nome}`);
+        console.log(`CPF do cliente: ${this.cpf}`);
+        console.log('Pets:');
+        this.pets.forEach(pet => {
+            console.log(`   nome do pet: ${pet.getNome}`)
+        });
+        console.log(`Quatidade de itens consumidos: ${this.getItensConsumidos}`);
+        console.log(`Valor consumido: ${this.valorConsumido}`);
     }
 
     public get getCpf(): CPF {
@@ -78,6 +98,14 @@ export default class Cliente {
         return this.pets
     }
     
+    public get getItensConsumidos(){
+        return this.itensConsumidos;
+    }
+
+    public get getValorConsumido(){
+        return this.valorConsumido;
+    }
+
     // Métodos set
     public setNome(nome: string) {
         this.nome = nome
@@ -110,5 +138,4 @@ export default class Cliente {
     public setPets(pets: Array<Pet>) {
         this.pets = pets
     }
-
 }
