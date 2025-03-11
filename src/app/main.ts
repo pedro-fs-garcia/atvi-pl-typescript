@@ -4,6 +4,7 @@ import AtualizacaoCliente from "../negocio/atualizacaoCliente";
 import AtualizacaoProduto from "../negocio/atualizacaoProduto";
 import AtualizacaoServico from "../negocio/atualizacaoServico";
 import CadastroCliente from "../negocio/cadastroCliente";
+import CadastroCompra from "../negocio/cadastroCompra";
 import CadastroPet from "../negocio/cadastroPet";
 import CadastroProduto from "../negocio/cadastroProduto";
 import CadastrarServico from "../negocio/cadastroServico";
@@ -11,6 +12,7 @@ import ListagemClientes from "../negocio/listagemClientes";
 import ListagemPets from "../negocio/listagemPets";
 import ListagemProdutos from "../negocio/listagemProdutos";
 import ListagemServicos from "../negocio/listagemServico";
+import Teste from "../testes/teste";
 
 console.log(`Bem-vindo ao melhor sistema de gerenciamento de pet shops e clínicas veterinarias`)
 let empresa = new Empresa()
@@ -34,7 +36,8 @@ while (execucao) {
     console.log('14 - Atualizar Serviços');
     console.log('15 - Exibir serviços mais vendidos');
     console.log('16 - cadastrar nova compra');
-    
+    console.log('17 - Listar produtos e serviços mais consumidos por raça e tipo');
+    // console.log('100 - Executar teste');
     console.log(`0 - Sair`);
 
     let entrada = new Entrada()
@@ -101,7 +104,16 @@ while (execucao) {
             listSer.listarMaisVendidos();
             break;
         case 16:
-            
+            let cadastroCompra = new CadastroCompra(empresa);
+            cadastroCompra.cadastro();
+            break;
+        case 17:
+            empresa.listarMaisConsumidosPorRacaETipo();
+            break;
+        case 100:
+            let teste = new Teste(empresa);
+            teste.main();
+            break;
         case 0:
             execucao = false
             console.log(`Até mais`)
