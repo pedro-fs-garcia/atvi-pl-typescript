@@ -13,6 +13,7 @@ export default class Teste{
 
     public main(){
         this.gerarClientes();
+        this.gerarPets();
         this.gerarProdutos();
         this.gerarServicos();
         this.gerarCompras();

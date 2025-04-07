@@ -18,6 +18,11 @@ export default class CadastroPet extends Cadastro {
         while (executar) {
             try {
                 let clienteCpf = this.entrada.receberTexto('Digite o cpf do cliente responsável pelo pet:');
+                if (clienteCpf == '0'){
+                    console.log("operação cancelada")
+                    executar = false;
+                    break;
+                }
                 let cliente = null
                 for (let cli of this.clientes) {
                     if (cli.getCpf.getValor === clienteCpf) {
@@ -43,9 +48,29 @@ export default class CadastroPet extends Cadastro {
             try{
                 console.log(`Cadastrar novo pet ao cliente ${cliente.nome}\n`)
                 let nome = this.entrada.receberTexto('Digite o nome do pet:');
+                if (nome == '0'){
+                    console.log("operação cancelada")
+                    executar = false;
+                    break;
+                }
                 let tipo = this.entrada.receberTexto('Digite o tipo do pet:');
+                if (tipo == '0'){
+                    console.log("operação cancelada")
+                    executar = false;
+                    break;
+                }
                 let raca = this.entrada.receberTexto('Digite a raça do pet:');
+                if (raca == '0'){
+                    console.log("operação cancelada")
+                    executar = false;
+                    break;
+                }
                 let genero = this.entrada.receberTexto('Digite o gênero do pet:');
+                if (genero == '0'){
+                    console.log("operação cancelada")
+                    executar = false;
+                    break;
+                }
                 const pet = new Pet(nome, raca, genero, tipo);
                 cliente.adicionaPet(pet);
                 let continuar = this.entrada.receberTexto('Deseja continuar adicionando pets ao cliente (s/n)?');

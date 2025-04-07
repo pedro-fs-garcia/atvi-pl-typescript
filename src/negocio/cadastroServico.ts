@@ -10,22 +10,27 @@ export default class CadastrarServico {
     }
 
     public cadastrar(){
-        console.log('\nInício do cadastro de novo serviço');
+        console.log('\nInício do cadastro de novo servico\n pressione 0 a qualquer momento para encerrar o cadastro');
         let executar = true;
-        while(executar){
+        while (executar){
             try{
-                let nome = this.entrada.receberTexto('Insira o nome do serviço: ');
-                let preco = this.entrada.receberNumero('Insira o preço do serviço:');
+                let nome = this.entrada.receberTexto('Insira o nome do servico: ');
+                if (nome == '0'){
+                    console.log('Encerrando o cadastro de servicos');
+                    break;
+                }
+                let preco = this.entrada.receberNumero('Insira o preco do servico: ');
+                
                 for (let servico of this.servicos){
                     if (servico.getNome == nome){
-                        console.log('Já existe um serviço com esse nome. Tente novamente.');
+                        console.log('Já existe um servico com esse nome. Tente novamente.');
                         continue;
                     }
-                    this.servicos.push(new Servico(nome, preco));
-                    executar = false;
                 }
+                this.servicos.push(new Servico(nome, preco));
+                executar = false;
             }catch(error){
-                console.log('Valors inseridos são inválidos. Tente novamente.');
+                console.log('valores inseridos são inválidos. Tente novamente');
             }
         }
     }

@@ -34,6 +34,7 @@ export default class ListagemClientes extends Listagem {
         top10.forEach(cli => {
             cli.listarPrincipaisAtributos();
         });
+        console.log('\n')
     }
 
     public listarCincoQueMaisGastaram(){
@@ -45,5 +46,6 @@ export default class ListagemClientes extends Listagem {
         top5.forEach(cli => {
             cli.listarPrincipaisAtributos();
         });
+        console.log('\n')
     }
 }

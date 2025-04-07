@@ -15,8 +15,12 @@ export default class AtualizacaoProduto {
         let executar = true;
         while(executar){
             try{
-                let nomeProd = this.entrada.receberTexto('Insira o nome do produto que será atualizado:');
+                let nomeProd = this.entrada.receberTexto('Insira o nome do produto que será atualizado (0 - voltar):');
                 let atualizaProd = null;
+                if (nomeProd == '0'){
+                    executar = false;
+                    break;
+                }
                 for (let prod of this.produtos){
                     if (prod.getNome == nomeProd){
                         atualizaProd = prod;
@@ -28,13 +32,13 @@ export default class AtualizacaoProduto {
                     continue;
                 }
                 this.atualizarProduto(atualizaProd);
-                let continua = this.entrada.receberTexto('Deseja continuar atualizando produtos (s/n) ?');
+                let continua = this.entrada.receberTexto('\nDeseja continuar atualizando produtos (s/n) ?');
                 if (continua.toLowerCase() != 's'){
                     executar = false;
                 }
 
             }catch(error){
-                console.log('Os valores inseridos são inválidos. Tente novamente.');
+                console.log('\nOs valores inseridos são inválidos. Tente novamente.');
             }
         }
     }

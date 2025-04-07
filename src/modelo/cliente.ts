@@ -61,13 +61,14 @@ export default class Cliente {
 
     public listarPrincipaisAtributos(){
         console.log(`Nome do cliente: ${this.nome}`);
-        console.log(`CPF do cliente: ${this.cpf}`);
+        console.log(`CPF do cliente: ${this.cpf.getValor}`);
         console.log('Pets:');
         this.pets.forEach(pet => {
             console.log(`   nome do pet: ${pet.getNome}`)
         });
         console.log(`Quatidade de itens consumidos: ${this.getItensConsumidos}`);
         console.log(`Valor consumido: ${this.valorConsumido}`);
+        console.log('----------------------\n')
     }
 
     public get getCpf(): CPF {

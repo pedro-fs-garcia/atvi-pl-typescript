@@ -60,7 +60,7 @@ export default class CadastroCompra {
                     }
                 }
                 if (cliente === null){
-                    console.log('Cliente não encontrado. Tente outro cpf.');
+                    console.log('\nCliente não encontrado. Tente outro cpf.\n');
                     executar = false;
                     continue;
                 }
@@ -73,12 +73,13 @@ export default class CadastroCompra {
                     }
                 }
                 if (produto === null){
-                    console.log('Produto não encontrado. Tente novamente.')
+                    console.log('\nProduto não encontrado. Tente novamente.\n')
                     executar = false;
                     continue;
                 }
                 let quant = this.entrada.receberNumero('Digite a quatidade de itens que serão comprados: ')
                 this.registrarCompraProduto(cliente, produto, quant);
+                executar = false;
 
             }catch(error){
                 console.log('Valores digitados são inválidos. Tente novamente.')
@@ -113,7 +114,7 @@ export default class CadastroCompra {
                     executar = false;
                     continue;
                 }
-                let servNome = this.entrada.receberTexto('Insira o nome do serviço vendido.');
+                let servNome = this.entrada.receberTexto('Insira o nome do serviço vendido:');
                 if (servNome === '0'){
                     executar = false;
                     break;
@@ -132,6 +133,7 @@ export default class CadastroCompra {
                 }
                 let quant = this.entrada.receberNumero('Digite a quatidade de itens que serão comprados: ')
                 this.registrarCompraServico(cliente, servico);
+                executar = false;
 
             }catch(error){
                 console.log('Valores inseridos são inválidos. Tente novamente.')

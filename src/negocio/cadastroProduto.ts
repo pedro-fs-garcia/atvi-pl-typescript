@@ -10,12 +10,17 @@ export default class CadastroProduto{
     }
 
     public cadastrar(){
-        console.log('\nInício do cadastro de novo produto');
+        console.log('\nInício do cadastro de novo produto\n pressione 0 a qualquer momento para encerrar o cadastro');
         let executar = true;
         while (executar){
             try{
                 let nome = this.entrada.receberTexto('Insira o nome do produto: ');
-                let preco = this.entrada.receberNumero('Insira o preco do produto');
+                if (nome == '0'){
+                    console.log('Encerrando o cadastro de produtos');
+                    break;
+                }
+                let preco = this.entrada.receberNumero('Insira o preco do produto: ');
+                
                 for (let produto of this.produtos){
                     if (produto.getNome == nome){
                         console.log('Já existe um produto com esse nome. Tente novamente.');
