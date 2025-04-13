@@ -47,7 +47,7 @@ export default class CadastroCompra {
         let executar = true;
         while(executar){
             try{
-                let cpf = this.entrada.receberTexto('Insira o cpf do cliente: ');
+                let cpf = this.entrada.receberTexto('Insira o cpf do cliente (0 - voltar): ');
                 if (cpf === '0'){
                     executar = false;
                     break;
@@ -61,10 +61,13 @@ export default class CadastroCompra {
                 }
                 if (cliente === null){
                     console.log('\nCliente não encontrado. Tente outro cpf.\n');
-                    executar = false;
                     continue;
                 }
-                let prodNome = this.entrada.receberTexto('Digite o nome do produto vendido:');
+                let prodNome = this.entrada.receberTexto('Digite o nome do produto vendido (0 - voltar): ');
+                if (prodNome === '0'){
+                    executar = false;
+                    break;
+                }
                 let produto = null;
                 for (let prod of this.empresa.getProdutos){
                     if (prod.getNome === prodNome){
@@ -74,10 +77,13 @@ export default class CadastroCompra {
                 }
                 if (produto === null){
                     console.log('\nProduto não encontrado. Tente novamente.\n')
-                    executar = false;
                     continue;
                 }
-                let quant = this.entrada.receberNumero('Digite a quatidade de itens que serão comprados: ')
+                let quant = this.entrada.receberNumero('Digite a quantidade de itens que serão comprados (0 - voltar): ');
+                if (quant === 0) {
+                    executar = false;
+                    break;
+                }
                 this.registrarCompraProduto(cliente, produto, quant);
                 executar = false;
 
@@ -89,15 +95,31 @@ export default class CadastroCompra {
 
 
     public registrarCompraProduto(cliente:Cliente, produto:Produto, quantidade:number){
-        cliente.adicionaProduto(produto, quantidade);
-        produto.registrarCompra(quantidade);
+        try {
+            if (quantidade > produto.getQuantidadeEstoque) {
+                console.log(`\nErro: Quantidade insuficiente em estoque.`);
+                console.log(`Quantidade disponível: ${produto.getQuantidadeEstoque}\n`);
+                return;
+            }
+            
+            cliente.adicionaProduto(produto, quantidade);
+            produto.registrarCompra(quantidade);
+            console.log(`\nCompra registrada com sucesso!`);
+            console.log(`Cliente: ${cliente.nome}`);
+            console.log(`Produto: ${produto.getNome}`);
+            console.log(`Quantidade: ${quantidade}`);
+            console.log(`Valor total: R$ ${(produto.getPreco * quantidade).toFixed(2)}`);
+            console.log(`Quantidade restante em estoque: ${produto.getQuantidadeEstoque}\n`);
+        } catch (error: any) {
+            console.log(`\nErro ao registrar compra: ${error.message}\n`);
+        }
     }
 
     public comprarServico(){
         let executar = true;
         while (executar){
             try{
-                let cpf = this.entrada.receberTexto('Insira o cpf do cliente: ');
+                let cpf = this.entrada.receberTexto('Insira o cpf do cliente (0 - voltar): ');
                 if (cpf === '0'){
                     executar = false;
                     break;
@@ -110,11 +132,10 @@ export default class CadastroCompra {
                     }
                 }
                 if (cliente === null){
-                    console.log('Cliente não encontrado. Tente outro cpf.');
-                    executar = false;
+                    console.log('\nCliente não encontrado. Tente outro cpf.\n');
                     continue;
                 }
-                let servNome = this.entrada.receberTexto('Insira o nome do serviço vendido:');
+                let servNome = this.entrada.receberTexto('Insira o nome do serviço vendido (0 - voltar): ');
                 if (servNome === '0'){
                     executar = false;
                     break;
@@ -127,11 +148,9 @@ export default class CadastroCompra {
                     }
                 }
                 if (servico === null){
-                    console.log('servico não encontrado. Tente novamente.')
-                    executar = false;
+                    console.log('\nServiço não encontrado. Tente novamente.\n');
                     continue;
                 }
-                let quant = this.entrada.receberNumero('Digite a quatidade de itens que serão comprados: ')
                 this.registrarCompraServico(cliente, servico);
                 executar = false;
 
@@ -144,5 +163,9 @@ export default class CadastroCompra {
     public registrarCompraServico(cliente:Cliente, servico:Servico){
         cliente.adicionaServico(servico);
         servico.registrarCompra();
+        console.log(`\nCompra registrada com sucesso!`);
+        console.log(`Cliente: ${cliente.nome}`);
+        console.log(`Serviço: ${servico.getNome}`);
+        console.log(`Valor: R$ ${servico.getPreco.toFixed(2)}\n`);
     }
 }

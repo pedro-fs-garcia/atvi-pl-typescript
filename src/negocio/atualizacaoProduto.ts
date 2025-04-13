@@ -44,14 +44,20 @@ export default class AtualizacaoProduto {
     }
 
     public atualizarProduto(produto:Produto){
-        let novoNome = this.entrada.receberTexto('Insira o novo nome do produto / deixe em branco para manter o nome atual');
-        let novoPreco = this.entrada.receberNumero('Insira o novo preco do produto / deixe em branco para manter o preço atual');
+        let novoNome = this.entrada.receberTexto('Insira o novo nome do produto / deixe em branco para manter o nome atual: ');
+        let novoPreco = this.entrada.receberNumero('Insira o novo preco do produto / digite 0 para manter o preço atual: ');
+        let novaQuantidade = this.entrada.receberNumero('Insira a nova quantidade em estoque / digite 0 para manter a quantidade atual: ');
+        
         if (novoNome != ""){
             produto.setNome(novoNome);
         }
-        if (novoPreco){
+        if (novoPreco > 0){
             produto.setPreco(novoPreco);
         }
-        console.log('Produto atualizado\n')
+        if (novaQuantidade > 0){
+            produto.setQuantidadeEstoque(novaQuantidade);
+        }
+        console.log('Produto atualizado com sucesso!\n');
+        produto.listarAtributos();
     }
 }

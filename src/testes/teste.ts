@@ -43,20 +43,20 @@ export default class Teste{
 
     public gerarProdutos(){
         const listaProdutos = [
-            { nome: "Ração para gato", preco: 32.99 },
-            { nome: "Ração para cachorro", preco: 45.50 },
-            { nome: "Brinquedo para pet", preco: 20.00 },
-            { nome: "Caminha para pet", preco: 80.99 },
-            { nome: "Coleira", preco: 15.75 },
-            { nome: "Shampoo para pet", preco: 25.30 },
-            { nome: "Caixa de areia", preco: 55.00 },
-            { nome: "Tapete higiênico", preco: 40.20 },
-            { nome: "Petiscos", preco: 18.90 },
-            { nome: "Roupa para pet", preco: 50.00 }
+            { nome: "Ração para gato", preco: 32.99, quantidade: 50 },
+            { nome: "Ração para cachorro", preco: 45.50, quantidade: 40 },
+            { nome: "Brinquedo para pet", preco: 20.00, quantidade: 30 },
+            { nome: "Caminha para pet", preco: 80.99, quantidade: 20 },
+            { nome: "Coleira", preco: 15.75, quantidade: 35 },
+            { nome: "Shampoo para pet", preco: 25.30, quantidade: 25 },
+            { nome: "Caixa de areia", preco: 55.00, quantidade: 15 },
+            { nome: "Tapete higiênico", preco: 40.20, quantidade: 30 },
+            { nome: "Petiscos", preco: 18.90, quantidade: 45 },
+            { nome: "Roupa para pet", preco: 50.00, quantidade: 20 }
         ];
 
         listaProdutos.forEach(prod => {
-            let produto = new Produto(prod.nome, prod.preco);
+            let produto = new Produto(prod.nome, prod.preco, prod.quantidade);
             this.empresa.getProdutos.push(produto);
         });
     }
@@ -85,12 +85,21 @@ export default class Teste{
         this.empresa.getClientes.forEach(cliente => {
             let produtoAleatorio = this.empresa.getProdutos[Math.floor(Math.random() * this.empresa.getProdutos.length)];
             let quantidade = Math.floor(Math.random()*10)+1;
-            cliente.adicionaProduto(produtoAleatorio, quantidade);
-            produtoAleatorio.consumo += 1;
+            try {
+                cliente.adicionaProduto(produtoAleatorio, quantidade);
+                produtoAleatorio.registrarCompra(quantidade);
+            } catch (error) {
+                // Se não houver estoque suficiente, tenta outro produto
+                let outroProduto = this.empresa.getProdutos.find(p => p !== produtoAleatorio);
+                if (outroProduto) {
+                    cliente.adicionaProduto(outroProduto, quantidade);
+                    outroProduto.registrarCompra(quantidade);
+                }
+            }
 
             let servicoAleatorio = this.empresa.getServicos[Math.floor(Math.random() * this.empresa.getServicos.length)];
             cliente.adicionaServico(servicoAleatorio);
-            servicoAleatorio.consumo += 1;
+            servicoAleatorio.registrarCompra();
         });
     }
 

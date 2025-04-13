@@ -95,6 +95,7 @@ while (execucao) {
         case 13:
             let listarServicos = new ListagemServicos(empresa.getServicos);
             listarServicos.listar();
+            break;
         case 14:
             let atualizarServico = new AtualizacaoServico(empresa.getServicos);
             atualizarServico.atualizar();
