@@ -15,34 +15,36 @@ export default class CadastroCliente extends Cadastro {
         this.clientes = clientes
         this.entrada = new Entrada()
     }
+    private handleError(error: any, message: string = 'Ocorreu um erro inesperado'): void {
+        console.error(`\n${message}: ${error instanceof Error ? error.message : error}`);
+        console.log('Por favor, tente novamente.\n');
+    }
+
     public cadastrar(): void {
-        console.log('\nInício do cadastro de novo cliente');
-        console.log('Digite "0" ou "cancelar" em qualquer campo para cancelar a operação\n');
-        
-        let cliente = new Cliente('', '', new CPF('', new Date()));
-        this.cadastrarNome(cliente);
-        
-        if (this.continue) {
-            this.cadastrarCpf(cliente);
-        }
-        
-        if (this.continue) {
-            this.cadastrarRg(cliente);
-        }
-        
-        if (this.continue) {
-            this.cadastrarTelefone(cliente);
-        }
-        
-        if (this.continue) {
-            this.cadastrarPet(cliente);
-        }
-        
-        if (this.continue) {
-            this.clientes.push(cliente);
-            console.log('\nCliente cadastrado com sucesso!');
-        } else {
-            console.log('\nCadastro cancelado pelo usuário.');
+        try {
+            console.log('\nInício do cadastro de novo cliente');
+            console.log('Digite "0" ou "cancelar" em qualquer campo para cancelar a operação\n');
+            
+            let cliente = new Cliente('', '', new CPF('', new Date()));
+            
+            try {
+                this.cadastrarNome(cliente);
+                if (this.continue) this.cadastrarCpf(cliente);
+                if (this.continue) this.cadastrarRg(cliente);
+                if (this.continue) this.cadastrarTelefone(cliente);
+                if (this.continue) this.cadastrarPet(cliente);
+                
+                if (this.continue) {
+                    this.clientes.push(cliente);
+                    console.log('\nCliente cadastrado com sucesso!');
+                } else {
+                    console.log('\nCadastro cancelado pelo usuário.');
+                }
+            } catch (error) {
+                this.handleError(error, 'Erro durante o cadastro do cliente');
+            }
+        } catch (error) {
+            this.handleError(error, 'Erro ao iniciar o cadastro');
         }
     }
 
@@ -60,10 +62,10 @@ export default class CadastroCliente extends Cadastro {
                     break;
                 }
                 
-                if (["", " ", "abcd"].includes(nome) || !isNaN(Number(nome))) {
-                    console.log('Nome digitado é inválido\n');
+                if (!nome || nome.trim().length < 2 || /^\d+$/.test(nome)) {
+                    console.log('Nome inválido. Deve conter pelo menos 2 caracteres e não pode conter apenas números.\n');
                 } else {
-                    cliente.nome = nome;
+                    cliente.nome = nome.trim();
                     nomeValido = true;
                 }
             } catch (error) {
@@ -84,6 +86,37 @@ export default class CadastroCliente extends Cadastro {
         cliente.nomeSocial = nomeSocial;
     }
 
+    private validarCPF(cpf: string): boolean {
+        cpf = cpf.replace(/[^\d]/g, '');
+        if (cpf.length !== 11) return false;
+        
+        // Validação básica de CPF
+        if (/^(\d)\1{10}$/.test(cpf)) return false;
+        
+        let soma = 0;
+        for (let i = 0; i < 9; i++) {
+            soma += parseInt(cpf.charAt(i)) * (10 - i);
+        }
+        let resto = 11 - (soma % 11);
+        let digitoVerificador1 = resto === 10 || resto === 11 ? 0 : resto;
+        
+        if (digitoVerificador1 !== parseInt(cpf.charAt(9))) return false;
+        
+        soma = 0;
+        for (let i = 0; i < 10; i++) {
+            soma += parseInt(cpf.charAt(i)) * (11 - i);
+        }
+        resto = 11 - (soma % 11);
+        let digitoVerificador2 = resto === 10 || resto === 11 ? 0 : resto;
+        
+        return digitoVerificador2 === parseInt(cpf.charAt(10));
+    }
+
+    private validarRG(rg: string): boolean {
+        rg = rg.replace(/[^\d]/g, '');
+        return rg.length >= 8 && rg.length <= 10;
+    }
+
     public cadastrarCpf(cliente: Cliente): void {
         if (!this.continue) {
             return;
@@ -98,6 +131,11 @@ export default class CadastroCliente extends Cadastro {
                     break;
                 }
                 
+                if (!this.validarCPF(valor)) {
+                    console.log('CPF inválido. Por favor, digite um CPF válido.\n');
+                    continue;
+                }
+                
                 let data = this.entrada.receberTexto(`Por favor informe a data de emissão do cpf, no padrão dd/mm/yyyy (0 para cancelar): `);
                 if (data === '0' || data.toLowerCase() === 'cancelar') {
                     this.continue = false;
@@ -105,10 +143,25 @@ export default class CadastroCliente extends Cadastro {
                 }
                 
                 let partesData = data.split('/');
-                let ano = new Number(partesData[2].valueOf()).valueOf();
-                let mes = new Number(partesData[1].valueOf()).valueOf();
-                let dia = new Number(partesData[0].valueOf()).valueOf();
+                if (partesData.length !== 3) {
+                    console.log('Formato de data inválido. Use dd/mm/yyyy\n');
+                    continue;
+                }
+                
+                let ano = parseInt(partesData[2]);
+                let mes = parseInt(partesData[1]) - 1;
+                let dia = parseInt(partesData[0]);
+                
+                if (isNaN(ano) || isNaN(mes) || isNaN(dia)) {
+                    console.log('Data inválida. Use apenas números.\n');
+                    continue;
+                }
+                
                 let dataEmissao = new Date(ano, mes, dia);
+                if (dataEmissao > new Date()) {
+                    console.log('Data de emissão não pode ser futura.\n');
+                    continue;
+                }
                 
                 let cpf = new CPF(valor, dataEmissao);
                 cliente.setCpf(cpf);
@@ -154,6 +207,13 @@ export default class CadastroCliente extends Cadastro {
         }
     }
 
+    private validarTelefone(ddd: string, numero: string): boolean {
+        ddd = ddd.replace(/\D/g, '');
+        numero = numero.replace(/\D/g, '');
+        
+        return ddd.length === 2 && numero.length >= 8 && numero.length <= 9;
+    }
+
     public cadastrarTelefone(cliente: Cliente): void {
         if (!this.continue) {
             return;
@@ -175,6 +235,11 @@ export default class CadastroCliente extends Cadastro {
                     break;
                 }
                 
+                if (!this.validarTelefone(ddd, numero)) {
+                    console.log('Telefone inválido. DDD deve ter 2 dígitos e número deve ter 8 ou 9 dígitos.\n');
+                    continue;
+                }
+                
                 cliente.adicionaTelefone(new Telefone(ddd, numero));
                 console.log('Telefone adicionado com sucesso!');
                 
@@ -186,6 +251,13 @@ export default class CadastroCliente extends Cadastro {
                 console.log('Valores inválidos. Tente novamente\n');
             }
         }
+    }
+
+    private validarPet(nome: string, tipo: string, raca: string, genero: string): boolean {
+        return nome.trim().length >= 2 &&
+               tipo.trim().length >= 2 &&
+               raca.trim().length >= 2 &&
+               ['m', 'f', 'masculino', 'feminino'].includes(genero.toLowerCase());
     }
 
     public cadastrarPet(cliente: Cliente): void {
@@ -215,13 +287,18 @@ export default class CadastroCliente extends Cadastro {
                     break;
                 }
                 
-                let genero = this.entrada.receberTexto('Digite o gênero do pet (0 para cancelar):');
+                let genero = this.entrada.receberTexto('Digite o gênero do pet (m/f) (0 para cancelar):');
                 if (genero === '0' || genero.toLowerCase() === 'cancelar') {
                     this.continue = false;
                     break;
                 }
                 
-                const pet = new Pet(nome, raca, genero, tipo);
+                if (!this.validarPet(nome, tipo, raca, genero)) {
+                    console.log('Dados do pet inválidos. Verifique se todos os campos foram preenchidos corretamente.\n');
+                    continue;
+                }
+                
+                const pet = new Pet(nome.trim(), raca.trim(), genero.toLowerCase(), tipo.trim());
                 cliente.adicionaPet(pet);
                 console.log('Pet adicionado com sucesso!');
                 
