@@ -35,7 +35,8 @@ export default class ListagemPets {
 
     public listarTodos(){
         this.clientes.forEach(cliente => {
-            console.log(`Cliente: ${cliente.getCpf.getValor}`);
+            console.log('\n=====================');
+            console.log(`\nCliente: ${cliente.getCpf.getValor}`);
             cliente.listarPets();
             console.log('=====================');
         });
