@@ -5,6 +5,15 @@ export default class Produto {
     public consumo:number;
     
     constructor (nome:string, preco:number, quantidadeEstoque:number){
+        if (!nome || nome.trim() === '') {
+            throw new Error('O nome do produto não pode ser vazio');
+        }
+        if (preco < 0) {
+            throw new Error('O preço do produto não pode ser negativo');
+        }
+        if (quantidadeEstoque < 0) {
+            throw new Error('A quantidade em estoque não pode ser negativa');
+        }
         this.nome = nome;
         this.preco = preco;
         this.quantidadeEstoque = quantidadeEstoque;

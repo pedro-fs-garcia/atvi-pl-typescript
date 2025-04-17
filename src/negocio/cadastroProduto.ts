@@ -55,7 +55,8 @@ export default class CadastrarProduto {
                 }
                 
                 if (!produtoExistente) {
-                    this.produtos.push(new Produto(nome, preco, quantidade));
+                    const novoProduto = new Produto(nome, preco, quantidade);
+                    this.produtos.push(novoProduto);
                     console.log('\nProduto cadastrado com sucesso!');
                     console.log(`Nome: ${nome}`);
                     console.log(`Preço: R$ ${preco.toFixed(2)}`);

@@ -5,6 +5,15 @@ export default class Pet {
     private genero: string
 
     constructor(nome: string, raca: string, genero: string, tipo: string) {
+        if (!nome || nome.trim() === '') {
+            throw new Error('O nome do pet não pode ser vazio');
+        }
+        if (!raca || raca.trim() === '') {
+            throw new Error('A raça do pet não pode ser vazia');
+        }
+        if (!genero || (genero !== 'Macho' && genero !== 'Fêmea')) {
+            throw new Error('O gênero do pet deve ser "Macho" ou "Fêmea"');
+        }
         this.nome = nome
         this.raca = raca
         this.genero = genero

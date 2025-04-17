@@ -20,6 +20,12 @@ export default class Cliente {
     private valorConsumido: number;
     
     constructor(nome: string, nomeSocial: string, cpf: CPF) {
+        if (!nome || nome.trim() === '') {
+            throw new Error('O nome do cliente não pode ser vazio');
+        }
+        if (!cpf || !cpf.getValor || cpf.getValor.length !== 11) {
+            throw new Error('CPF inválido');
+        }
         this.nome = nome
         this.nomeSocial = nomeSocial
         this.cpf = cpf
@@ -42,6 +48,9 @@ export default class Cliente {
     }
 
     public adicionaProduto(produto:Produto, quantidade:number){
+        if (quantidade > produto.getQuantidadeEstoque) {
+            throw new Error('Quantidade solicitada maior que o estoque disponível');
+        }
         this.produtosConsumidos.push(produto);
         this.itensConsumidos += quantidade;
         this.valorConsumido += produto.getPreco * quantidade;

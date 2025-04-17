@@ -4,6 +4,12 @@ export default class Servico {
     public consumo:number;
 
     constructor (nome:string, preco:number){
+        if (!nome || nome.trim() === '') {
+            throw new Error('O nome do serviço não pode ser vazio');
+        }
+        if (preco < 0) {
+            throw new Error('O preço do serviço não pode ser negativo');
+        }
         this.nome = nome;
         this.preco = preco;
         this.consumo = 0;
