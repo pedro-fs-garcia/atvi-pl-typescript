@@ -44,6 +44,10 @@ export default class CadastroCompra {
     }
 
     public comprarProduto(){
+        console.log("\nClientes cadastrados:");
+        this.empresa.getClientes.forEach((cliente, index) => {
+            console.log(`${index + 1} - ${cliente.nome} (CPF: ${cliente.getCpf.getValor})`);
+        });
         let executar = true;
         while(executar){
             try{
@@ -116,6 +120,10 @@ export default class CadastroCompra {
     }
 
     public comprarServico(){
+        console.log("\nClientes cadastrados:");
+        this.empresa.getClientes.forEach((cliente, index) => {
+            console.log(`${index + 1} - ${cliente.nome} (CPF: ${cliente.getCpf.getValor})`);
+        });
         let executar = true;
         while (executar){
             try{

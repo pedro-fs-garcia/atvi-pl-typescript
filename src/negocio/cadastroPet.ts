@@ -16,32 +16,34 @@ export default class CadastroPet extends Cadastro {
     public cadastrar(): void {
         console.log('\nInício do cadastro de novo pet');
         console.log('Digite "0" ou "cancelar" em qualquer campo para cancelar a operação\n');
-        
+        console.log("\nClientes cadastrados:");
+        this.clientes.forEach((cliente, index) => {
+            console.log(`${index + 1} - ${cliente.nome} (CPF: ${cliente.getCpf.getValor})`);
+        });
         let executar = true;
         while (executar) {
             try {
-                let clienteCpf = this.entrada.receberTexto('Digite o CPF do cliente responsável pelo pet (0 para cancelar):');
-                if (clienteCpf === '0' || clienteCpf.toLowerCase() === 'cancelar') {
+                let indice = this.entrada.receberNumero('Digite o número do cliente responsável pelo pet (0 para cancelar):');
+                if (indice === 0) {
                     console.log('Operação cancelada pelo usuário.');
                     executar = false;
                     break;
                 }
                 
-                let cliente = null;
-                for (let cli of this.clientes) {
-                    if (cli.getCpf.getValor === clienteCpf) {
-                        cliente = cli;
-                        break;
-                    }
-                }
-                
-                if (cliente === null) {
-                    console.log('\nCliente não encontrado. Tente novamente.\n');
+                if (indice < 1 || indice > this.clientes.length) {
+                    console.log('Índice inválido. Por favor, escolha um número entre 1 e ' + this.clientes.length);
                     continue;
                 }
                 
-                this.cadastrarPet(cliente);
-                executar = false;
+                let clienteSelecionado = this.clientes[indice - 1];
+                console.log(`\nCliente selecionado: ${clienteSelecionado.nome} (CPF: ${clienteSelecionado.getCpf.getValor})`);
+                
+                this.cadastrarPet(clienteSelecionado);
+                
+                let continua = this.entrada.receberTexto('Deseja cadastrar pet para outro cliente (s/n)? ');
+                if (continua.toLowerCase() !== 's') {
+                    executar = false;
+                }
             } catch (error) {
                 console.log('Valores digitados são inválidos. Tente novamente\n');
             }
