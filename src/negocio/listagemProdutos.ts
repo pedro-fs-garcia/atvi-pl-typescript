@@ -10,9 +10,7 @@ export default class ListagemProdutos {
         console.log('\nLista de todos os produtos disponíveis:');
         for (let i=0; i<this.produtos.length; i++){
             let prod = this.produtos[i]
-            console.log(`\nÍndice do produto: ${i}`);
             prod.listarAtributos();
-            console.log('-----------------------')
         }
     }
 

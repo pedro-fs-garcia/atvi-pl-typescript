@@ -12,6 +12,10 @@ import ListagemClientes from "../negocio/listagemClientes";
 import ListagemPets from "../negocio/listagemPets";
 import ListagemProdutos from "../negocio/listagemProdutos";
 import ListagemServicos from "../negocio/listagemServico";
+import ExclusaoCliente from "../negocio/exclusaoCliente";
+import ExclusaoPet from "../negocio/exclusaoPet";
+import ExclusaoProduto from "../negocio/exclusaoProduto";
+import ExclusaoServico from "../negocio/exclusaoServico";
 import Teste from "../testes/teste";
 import TesteErros from "../testes/testeErros";
 
@@ -21,24 +25,11 @@ let execucao = true
 
 while (execucao) {
     console.log(`\nOpções:`);
-    console.log(`1 - Cadastrar cliente`);
-    console.log(`2 - Listar todos os clientes`);
-    console.log('3 - Atualizar dados do cliente');
-    console.log('4 - Cadastrar novo pet');
-    console.log('5 - Listar pets');
-    console.log('6 - Listar 10 clientes que mais consumiram em quantidade');
-    console.log('7 - Listar 5 clientes que mais consumiram em valor');
-    console.log('8 - Cadastrar Produto');
-    console.log('9 - Listar Produtos');
-    console.log('10 - Atualizar Produtos');
-    console.log('11 - Exibir produtos mais vendidos');
-    console.log('12 - Cadastrar Serviço');
-    console.log('13 - Listar Serviços');
-    console.log('14 - Atualizar Serviços');
-    console.log('15 - Exibir serviços mais vendidos');
-    console.log('16 - cadastrar nova compra');
-    console.log('17 - Listar produtos e serviços mais consumidos por raça e tipo');
-    console.log('18 - Executar testes de erros');
+    console.log(`1 - Cadastros`);
+    console.log(`2 - Listagens`);
+    console.log(`3 - Atualizações`);
+    console.log(`4 - Exclusões`);
+    console.log(`5 - Relatórios`);
     console.log(`0 - Sair`);
 
     let entrada = new Entrada()
@@ -46,73 +37,155 @@ while (execucao) {
 
     switch (opcao) {
         case 1:
-            let cadastro = new CadastroCliente(empresa.getClientes)
-            cadastro.cadastrar()
+            console.log("\nOpções de cadastro:");
+            console.log("1 - Cadastrar cliente");
+            console.log("2 - Cadastrar pet");
+            console.log("3 - Cadastrar produto");
+            console.log("4 - Cadastrar serviço");
+            console.log("5 - Cadastrar compra");
+            console.log("0 - Voltar");
+            console.log("\n");
+            const opcaoCadastro = entrada.receberNumero("Escolha uma opção: ");
+            
+            switch (opcaoCadastro) {
+                case 1:
+                    new CadastroCliente(empresa.getClientes).cadastrar();
+                    break;
+                case 2:
+                    new CadastroPet(empresa.getClientes).cadastrar();
+                    break;
+                case 3:
+                    new CadastroProduto(empresa.getProdutos).cadastrar();
+                    break;
+                case 4:
+                    new CadastrarServico(empresa.getServicos).cadastrar();
+                    break;
+                case 5:
+                    new CadastroCompra(empresa).cadastro();
+                    break;
+                case 0:
+                    break;
+                default:
+                    console.log("Opção inválida.");
+            }
             break;
         case 2:
-            let listagem = new ListagemClientes(empresa.getClientes)
-            listagem.listar()
+            console.log("\nOpções de listagem:");
+            console.log("1 - Listar clientes");
+            console.log("2 - Listar pets");
+            console.log("3 - Listar produtos");
+            console.log("4 - Listar serviços");
+            console.log("0 - Voltar");
+            console.log("\n");
+            const opcaoListagem = entrada.receberNumero("Escolha uma opção: ");
+            
+            switch (opcaoListagem) {
+                case 1:
+                    new ListagemClientes(empresa.getClientes).listar();
+                    break;
+                case 2:
+                    new ListagemPets(empresa.getClientes).listar();
+                    break;
+                case 3:
+                    new ListagemProdutos(empresa.getProdutos).listar();
+                    break;
+                case 4:
+                    new ListagemServicos(empresa.getServicos).listar();
+                    break;
+                case 0:
+                    break;
+                default:
+                    console.log("Opção inválida.");
+            }
             break;
         case 3:
-            let atualiza = new AtualizacaoCliente(empresa.getClientes)
-            atualiza.atualizar();
+            console.log("\nOpções de atualização:");
+            console.log("1 - Atualizar cliente");
+            console.log("2 - Atualizar produto");
+            console.log("3 - Atualizar serviço");
+            console.log("0 - Voltar");
+            console.log("\n");
+            const opcaoAtualizacao = entrada.receberNumero("Escolha uma opção: ");
+            
+            switch (opcaoAtualizacao) {
+                case 1:
+                    new AtualizacaoCliente(empresa.getClientes).atualizar();
+                    break;
+                case 2:
+                    new AtualizacaoProduto(empresa.getProdutos).atualizar();
+                    break;
+                case 3:
+                    new AtualizacaoServico(empresa.getServicos).atualizar();
+                    break;
+                case 0:
+                    break;
+                default:
+                    console.log("Opção inválida.");
+            }
             break;
         case 4:
-            let cadastroPet = new CadastroPet(empresa.getClientes);
-            cadastroPet.cadastrar();
+            console.log("\nOpções de exclusão:");
+            console.log("1 - Excluir cliente");
+            console.log("2 - Excluir pet");
+            console.log("3 - Excluir produto");
+            console.log("4 - Excluir serviço");
+            console.log("0 - Voltar");
+            console.log("\n");
+            const opcaoExclusao = entrada.receberNumero("Escolha uma opção: ");
+            
+            switch (opcaoExclusao) {
+                case 1:
+                    new ExclusaoCliente(empresa.getClientes).excluir();
+                    break;
+                case 2:
+                    new ExclusaoPet(empresa.getClientes).excluir();
+                    break;
+                case 3:
+                    new ExclusaoProduto(empresa.getProdutos).excluir();
+                    break;
+                case 4:
+                    new ExclusaoServico(empresa.getServicos).excluir();
+                    break;
+                case 0:
+                    break;
+                default:
+                    console.log("Opção inválida.");
+            }
             break;
         case 5:
-            let listagemPets = new ListagemPets(empresa.getClientes);
-            listagemPets.listar();
+            console.log("\nOpções de relatórios:");
+            console.log("1 - Listar 10 clientes que mais consumiram em quantidade");
+            console.log("2 - Listar 5 clientes que mais consumiram em valor");
+            console.log("3 - Exibir produtos mais vendidos");
+            console.log("4 - Exibir serviços mais vendidos");
+            console.log("5 - Listar produtos e serviços mais consumidos por raça e tipo");
+            console.log("0 - Voltar");
+            console.log("\n");
+            const opcaoRelatorio = entrada.receberNumero("Escolha uma opção: ");
+            
+            switch (opcaoRelatorio) {
+                case 1:
+                    new ListagemClientes(empresa.getClientes).listarDezQueMaisConsumiram();
+                    break;
+                case 2:
+                    new ListagemClientes(empresa.getClientes).listarCincoQueMaisGastaram();
+                    break;
+                case 3:
+                    new ListagemProdutos(empresa.getProdutos).listarMaisVendidos();
+                    break;
+                case 4:
+                    new ListagemServicos(empresa.getServicos).listarMaisVendidos();
+                    break;
+                case 5:
+                    empresa.listarMaisConsumidosPorRacaETipo();
+                    break;
+                case 0:
+                    break;
+                default:
+                    console.log("Opção inválida.");
+            }
             break;
         case 6:
-            let listagemDez = new ListagemClientes(empresa.getClientes);
-            listagemDez.listarDezQueMaisConsumiram();
-            break;
-        case 7:
-            let listagemCinco = new ListagemClientes(empresa.getClientes);
-            listagemCinco.listarCincoQueMaisGastaram();
-            break;
-        case 8:
-            let cadastrarProduto = new CadastroProduto(empresa.getProdutos);
-            cadastrarProduto.cadastrar();
-            break;
-        case 9:
-            let listarProidutos = new ListagemProdutos(empresa.getProdutos);
-            listarProidutos.listar();
-            break;
-        case 10:
-            let atualizarProduto = new AtualizacaoProduto(empresa.getProdutos);
-            atualizarProduto.atualizar();
-            break;
-        case 11:
-            let listProd = new ListagemProdutos(empresa.getProdutos);
-            listProd.listarMaisVendidos();
-            break;
-        case 12:
-            let cadastrarServico = new CadastrarServico(empresa.getServicos);
-            cadastrarServico.cadastrar();
-            break;
-        case 13:
-            let listarServicos = new ListagemServicos(empresa.getServicos);
-            listarServicos.listar();
-            break;
-        case 14:
-            let atualizarServico = new AtualizacaoServico(empresa.getServicos);
-            atualizarServico.atualizar();
-            break;
-        case 15:
-            let listSer = new ListagemServicos(empresa.getServicos);
-            listSer.listarMaisVendidos();
-            break;
-        case 16:
-            let cadastroCompra = new CadastroCompra(empresa);
-            cadastroCompra.cadastro();
-            break;
-        case 17:
-            empresa.listarMaisConsumidosPorRacaETipo();
-            break;
-        case 18:
             let testeErros = new TesteErros(empresa);
             testeErros.executarTestes();
             break;

@@ -26,10 +26,11 @@ export default class Pet {
     public get getTipo(){return this.tipo}
 
     public listarAtributos(){
+        console.log("--------------------------------");
         console.log(`Nome do pet: ${this.nome}`);
         console.log(`Tipo de pet: ${this.tipo}`);
         console.log(`Raça do pet: ${this.raca}`);
         console.log(`Gênero do pet: ${this.genero}`);
-        console.log('-----------');
+        console.log("--------------------------------");
     }
 }

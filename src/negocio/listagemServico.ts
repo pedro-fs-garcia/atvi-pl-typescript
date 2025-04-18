@@ -10,9 +10,7 @@ export default class ListagemServicos {
         console.log('\nLista de todos os serviços disponíveis:');
         for (let i=0; i<this.servicos.length; i++){
             let ser = this.servicos[i];
-            console.log(`\nÍndice do serviço: ${i}`);
             ser.listarAtributos();
-            console.log('---------------');
         }
     }
 

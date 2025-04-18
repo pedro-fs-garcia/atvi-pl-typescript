@@ -13,10 +13,14 @@ export default class AtualizacaoServico {
     public atualizar() {
         console.log('\nInício da atualização de Serviços');
         let executar = true;
-        
+        console.log("\nServiços cadastrados:");
+        this.servicos.forEach((servico, index) => {
+            console.log(`${index + 1} - ${servico.getNome} (R$ ${servico.getPreco.toFixed(2)})`);
+        });
         while (executar) {
             try {
-                let nomeservico = this.entrada.receberTexto('\nInsira o nome do serviço que será atualizado (0 - voltar):');
+                console.log("\n");
+                let nomeservico = this.entrada.receberTexto('Insira o nome do serviço que será atualizado (0 - voltar):');
                 
                 if (nomeservico === '0') {
                     console.log('Operação cancelada pelo usuário.');
@@ -37,7 +41,8 @@ export default class AtualizacaoServico {
                     continue;
                 }
                 this.atualizarServico(servico);
-                let continua = this.entrada.receberTexto('\nDeseja continuar editando serviços (s/n) ?');
+                console.log("\n");
+                let continua = this.entrada.receberTexto('Deseja continuar editando serviços (s/n) ?');
                 if (continua.toLowerCase() !== 's') {
                     executar = false;
                 }

@@ -24,9 +24,11 @@ export default class Servico {
     }
 
     public listarAtributos(){
+        console.log("--------------------------------");
         console.log(`Nome do serviço: ${this.nome}`);
         console.log(`Preço do serviço: ${this.preco}`);
         console.log(`Este serviço foi comprado ${this.consumo} vezes`);
+        console.log("--------------------------------");
     }
 
     public registrarCompra(){

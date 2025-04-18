@@ -2,7 +2,7 @@ import Entrada from "../io/entrada";
 import Produto from "../modelo/produto";
 import ListagemProdutos from "./listagemProdutos";
 
-export default class AtualizacaoProduto {
+export default class AtualizacaoProduto e {
     private produtos: Array<Produto>;
     private entrada:Entrada
     constructor(produtos:Array<Produto>){
@@ -11,7 +11,11 @@ export default class AtualizacaoProduto {
     }
 
     public atualizar(){
-        console.log('\nInício da atualização de Produtos');
+        console.log("\nInício da atualização de Produtos");
+        console.log("\nProdutos cadastrados:");
+        this.produtos.forEach((produto, index) => {
+            console.log(`${index + 1} - ${produto.getNome} (R$ ${produto.getPreco.toFixed(2)})`);
+        });
         let executar = true;
         while(executar){
             try{
@@ -32,7 +36,8 @@ export default class AtualizacaoProduto {
                     continue;
                 }
                 this.atualizarProduto(atualizaProd);
-                let continua = this.entrada.receberTexto('\nDeseja continuar atualizando produtos (s/n) ?');
+                console.log("\n");
+                let continua = this.entrada.receberTexto('Deseja continuar atualizando produtos (s/n) ?');
                 if (continua.toLowerCase() != 's'){
                     executar = false;
                 }

@@ -18,6 +18,11 @@ export default class AtualizacaoCliente extends Atualizacao {
 
     public atualizar(): void {
         console.log('\nInício da atualização de clientes');
+        console.log("\nClientes cadastrados:");
+        this.clientes.forEach((cliente, index) => {
+            console.log(`${index + 1} - ${cliente.nome} (CPF: ${cliente.getCpf.getValor})`);
+        });
+        
         console.log('Digite "0" ou "cancelar" em qualquer campo para cancelar a operação\n');
         let execucao = true;
         

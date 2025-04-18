@@ -33,10 +33,12 @@ export default class Produto {
     }
 
     public listarAtributos(){
+        console.log("--------------------------------");
         console.log(`Nome do produto: ${this.nome}`);
         console.log(`Preco do produto: ${this.preco}`);
         console.log(`Quantidade em estoque: ${this.quantidadeEstoque}`);
         console.log(`Este produto foi comprado ${this.consumo} vezes`);
+        console.log("--------------------------------");
     }
 
     public registrarCompra(quantidade:number){

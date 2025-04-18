@@ -69,6 +69,7 @@ export default class Cliente {
     }
 
     public listarPrincipaisAtributos(){
+        console.log("--------------------------------");
         console.log(`Nome do cliente: ${this.nome}`);
         console.log(`CPF do cliente: ${this.cpf.getValor}`);
         console.log('Pets:');
@@ -77,7 +78,7 @@ export default class Cliente {
         });
         console.log(`Quatidade de itens consumidos: ${this.getItensConsumidos}`);
         console.log(`Valor consumido: ${this.valorConsumido}`);
-        console.log('----------------------\n')
+        console.log("--------------------------------");
     }
 
     public get getCpf(): CPF {
