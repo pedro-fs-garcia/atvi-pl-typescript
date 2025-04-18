@@ -20,27 +20,21 @@ export default class AtualizacaoServico {
         while (executar) {
             try {
                 console.log("\n");
-                let nomeservico = this.entrada.receberTexto('Insira o nome do serviço que será atualizado (0 - voltar):');
+                let indice = this.entrada.receberNumero('Insira o número do serviço que será atualizado (0 - voltar):');
                 
-                if (nomeservico === '0') {
+                if (indice === 0) {
                     console.log('Operação cancelada pelo usuário.');
                     executar = false;
                     break;
                 }
                 
-                let servico = null;
-                for (let ser of this.servicos) {
-                    if (ser.getNome === nomeservico) {
-                        servico = ser;
-                        break;
-                    }
-                }
-                
-                if (servico === null) {
-                    console.log('Não foi encontrado nenhum serviço com esse nome.');
+                if (indice < 1 || indice > this.servicos.length) {
+                    console.log('Índice inválido. Por favor, escolha um número entre 1 e ' + this.servicos.length);
                     continue;
                 }
-                this.atualizarServico(servico);
+                
+                let servicoSelecionado = this.servicos[indice - 1];
+                this.atualizarServico(servicoSelecionado);
                 console.log("\n");
                 let continua = this.entrada.receberTexto('Deseja continuar editando serviços (s/n) ?');
                 if (continua.toLowerCase() !== 's') {

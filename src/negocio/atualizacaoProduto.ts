@@ -2,7 +2,7 @@ import Entrada from "../io/entrada";
 import Produto from "../modelo/produto";
 import ListagemProdutos from "./listagemProdutos";
 
-export default class AtualizacaoProduto e {
+export default class AtualizacaoProduto {
     private produtos: Array<Produto>;
     private entrada:Entrada
     constructor(produtos:Array<Produto>){
@@ -19,23 +19,19 @@ export default class AtualizacaoProduto e {
         let executar = true;
         while(executar){
             try{
-                let nomeProd = this.entrada.receberTexto('Insira o nome do produto que será atualizado (0 - voltar):');
-                let atualizaProd = null;
-                if (nomeProd == '0'){
+                let indice = this.entrada.receberNumero('Insira o número do produto que será atualizado (0 - voltar):');
+                if (indice === 0){
                     executar = false;
                     break;
                 }
-                for (let prod of this.produtos){
-                    if (prod.getNome == nomeProd){
-                        atualizaProd = prod;
-                        break;
-                    }
-                }
-                if (atualizaProd === null){
-                    console.log('Não foi encontrado nenhum produto com esse nome.')
+                
+                if (indice < 1 || indice > this.produtos.length) {
+                    console.log('Índice inválido. Por favor, escolha um número entre 1 e ' + this.produtos.length);
                     continue;
                 }
-                this.atualizarProduto(atualizaProd);
+                
+                let produtoSelecionado = this.produtos[indice - 1];
+                this.atualizarProduto(produtoSelecionado);
                 console.log("\n");
                 let continua = this.entrada.receberTexto('Deseja continuar atualizando produtos (s/n) ?');
                 if (continua.toLowerCase() != 's'){

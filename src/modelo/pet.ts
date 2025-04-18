@@ -11,8 +11,8 @@ export default class Pet {
         if (!raca || raca.trim() === '') {
             throw new Error('A raça do pet não pode ser vazia');
         }
-        if (!genero || (genero !== 'Macho' && genero !== 'Fêmea')) {
-            throw new Error('O gênero do pet deve ser "Macho" ou "Fêmea"');
+        if (!genero || (genero !== 'Macho' && genero !== 'Fêmea' && genero !== 'm' && genero !== 'f')) {
+            throw new Error(`O gênero do pet deve ser "Macho" ou "Fêmea" ou "m" ou "f"`);
         }
         this.nome = nome
         this.raca = raca

@@ -28,27 +28,27 @@ export default class AtualizacaoCliente extends Atualizacao {
         
         while (execucao) {
             try {
-                let inputCpf = this.entrada.receberTexto('Insira o cpf do cliente que será atualizado (0 para voltar):');
-                if (inputCpf === '0' || inputCpf.toLowerCase() === 'cancelar') {
+                let indice = this.entrada.receberNumero('Insira o número do cliente que será atualizado (0 para voltar):');
+                if (indice === 0) {
                     execucao = false;
                     break;
                 }
-
-                let clienteEncontrado = false;
-                for (let cliente of this.clientes) {
-                    if (cliente.getCpf.getValor === inputCpf) {
-                        clienteEncontrado = true;
-                        console.log('\nCliente encontrado:\n------------');
-                        cliente.listarPrincipaisAtributos();
-                        console.log('------------------\n');
-                        this.atualizaAtributos(cliente);
-                        console.log('===============\n');
-                        break;
-                    }
+                
+                if (indice < 1 || indice > this.clientes.length) {
+                    console.log('Índice inválido. Por favor, escolha um número entre 1 e ' + this.clientes.length);
+                    continue;
                 }
-
-                if (!clienteEncontrado) {
-                    console.log('CPF não encontrado na lista de clientes. Tente novamente.');
+                
+                let clienteSelecionado = this.clientes[indice - 1];
+                console.log('\nCliente selecionado:\n------------');
+                clienteSelecionado.listarPrincipaisAtributos();
+                console.log('------------------\n');
+                this.atualizaAtributos(clienteSelecionado);
+                console.log('===============\n');
+                
+                let continua = this.entrada.receberTexto('Deseja continuar atualizando clientes (s/n)? ');
+                if (continua.toLowerCase() !== 's') {
+                    execucao = false;
                 }
             } catch (error) {
                 console.log('Erro ao processar a atualização. Tente novamente.');
@@ -143,7 +143,7 @@ export default class AtualizacaoCliente extends Atualizacao {
                 } else {
                     for (let i = 0; i < cliente.getTelefones.length; i++) {
                         let telefone = cliente.getTelefones[i];
-                        console.log(`${i} - (${telefone.getDdd}) ${telefone.getNumero}\n`);
+                        console.log(`${i + 1} - (${telefone.getDdd}) ${telefone.getNumero}\n`);
                     }
                 }
 
@@ -174,11 +174,11 @@ export default class AtualizacaoCliente extends Atualizacao {
                             break;
                         }
                         let index = this.entrada.receberNumero('Insira o índice do telefone que deverá ser excluído:');
-                        if (index < 0 || index >= cliente.getTelefones.length) {
+                        if (index < 0 || index > cliente.getTelefones.length) {
                             console.log('Índice inválido.');
                             break;
                         }
-                        cliente.getTelefones.splice(index, 1);
+                        cliente.getTelefones.splice(index-1, 1);
                         console.log('Telefone removido com sucesso!');
                         break;
                     case 0:
@@ -203,7 +203,7 @@ export default class AtualizacaoCliente extends Atualizacao {
                     console.log('Nenhum pet cadastrado.\n');
                 } else {
                     for (let i = 0; i < clientePets.length; i++) {
-                        console.log(`${i} - ${clientePets[i].getNome}`);
+                        console.log(`${i+1} - ${clientePets[i].getNome}`);
                     }
                 }
 
@@ -235,7 +235,9 @@ export default class AtualizacaoCliente extends Atualizacao {
                             console.log('Operação cancelada.');
                             break;
                         }
-                        cliente.adicionaPet(new Pet(nome, raca, genero, tipo));
+                        console.log(nome, raca, genero, tipo);
+                        const pet = new Pet(nome, raca, genero, tipo);
+                        cliente.adicionaPet(pet);
                         console.log('Pet adicionado com sucesso!');
                         break;
                     case 2:
@@ -244,11 +246,15 @@ export default class AtualizacaoCliente extends Atualizacao {
                             break;
                         }
                         let index = this.entrada.receberNumero('Insira o índice do pet que deverá ser excluído:');
-                        if (index < 0 || index >= clientePets.length) {
+                        if(index == 0){
+                            console.log('Operação cancelada.');
+                            break;
+                        }
+                        if (index < 0 || index > clientePets.length) {
                             console.log('Índice inválido.');
                             break;
                         }
-                        cliente.getPets.splice(index, 1);
+                        cliente.getPets.splice(index-1, 1);
                         console.log('Pet removido com sucesso!');
                         break;
                     case 0:
@@ -258,7 +264,7 @@ export default class AtualizacaoCliente extends Atualizacao {
                         console.log('Operação não atendida, tente novamente.');
                 }
             } catch (error) {
-                console.log('Valores inseridos são inválidos. Tente novamente.');
+                console.log(`Valores inseridos são inválidos. Tente novamente. ${error}`);
             }
         }
     }
